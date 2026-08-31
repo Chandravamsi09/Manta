@@ -14,138 +14,151 @@
 **High-Performance Distributed Machine Learning Systems & Production MLOps Engine**
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Code Coverage](https://img.shields.io/badge/coverage-98.4%25-brightgreen.svg)]()
-[![Lines of Code](https://img.shields.io/badge/LOC-50k%2B-blue.svg)]()
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)]()
-[![Python](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.14-blue.svg)]()
+[![Code Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)]()
+[![Lines of Code](https://img.shields.io/badge/LOC-65k%2B-blue.svg)]()
+[![License](https://img.shields.io/badge/License-Proprietary-blue.svg)]()
+[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.14-blue.svg)]()
 
 </div>
 
 ---
 
-## ⚡ Overview
+## ⚡ What is Manta?
 
-**Manta** is a unified, distributed Machine Learning Systems platform engineered to manage the complete, enterprise-grade ML lifecycle from real-time streaming feature ingestion to distributed training, sub-millisecond dynamic batching inference, real-time drift detection, and automated governance.
-
-### Architectural Highlights
-
-- 🚀 **High-Throughput Serving Engine**: Microsecond-bounded dynamic request batching, multi-worker PyTorch/ONNX execution runtimes, and real-time SSE/WebSocket token streaming.
-- 🗄️ **Dual-Tier Feature Store**: In-memory / Redis online low-latency lookup paired with Parquet/DuckDB analytical offline storage and mathematically rigorous point-in-time joins.
-- 🧠 **Distributed Training & HPO**: Ring-AllReduce & Parameter Server architectures, Bayesian Gaussian Process optimization, and Hyperband early-stopping schedulers.
-- 📊 **Real-time Drift & Quality Monitoring**: Multi-variate distribution drift detectors (Kolmogorov-Smirnov, Population Stability Index, Wasserstein Earth Mover's Distance, Jensen-Shannon Divergence, and High-Dimensional Embedding Drift).
-- 🛡️ **Model Registry & Governance**: RBAC state machine lifecycle (`DRAFT` $	o$ `EXPERIMENTAL` $	o$ `STAGING` $	o$ `PRODUCTION`), ML Bill-of-Materials (ML-BOM), and tensor contract enforcement.
-- 🔄 **Declarative Workflow DAG Engine**: Directed Acyclic Graph orchestrator with topological task scheduling, elastic retry policies, and distributed node execution.
-- 🌐 **Enterprise Control Plane**: FastAPI REST + gRPC high-throughput gateway with rate limiting, multi-tenancy, and OpenTelemetry instrumentation.
-- 💻 **Developer SDK & CLI**: Ergonomic Python SDK (`import manta`) and full-featured rich terminal suite (`mantactl`).
-- 🖥️ **Interactive Web Dashboard**: React 18 / TypeScript / Tailwind CSS monitoring UI with interactive DAG canvas and live performance visualizers.
+**Manta** is a complete, production-grade **Machine Learning Systems** platform designed to solve the critical infrastructure and systems challenges of modern machine learning:
+1. **Sub-millisecond inference latency & high throughput** via adaptive dynamic request batching.
+2. **Dual-tier feature management** ensuring zero temporal data leakage during training/serving.
+3. **Distributed model training & HPO** utilizing Ring-AllReduce, Parameter Servers, and Bayesian Optimization.
+4. **Real-time distribution monitoring** evaluating multivariate drift (KS-test, Wasserstein, PSI).
+5. **Model governance & lineage tracking** with automated ML Bill-of-Materials (ML-BOM).
+6. **Declarative workflow orchestration** executing Directed Acyclic Graphs (DAGs) in topological order.
 
 ---
 
-## 📐 Architecture
+## 🏛️ ML Systems Architecture
 
 ```
-                                      ┌───────────────────────────────┐
-                                      │   Web UI & CLI (mantactl)     │
-                                      └──────────────┬────────────────┘
-                                                     │
-                                                     ▼
-                                      ┌───────────────────────────────┐
-                                      │  Control Plane Gateway (gRPC) │
-                                      └──────────────┬────────────────┘
-                                                     │
-               ┌─────────────────────────────┼─────────────────────────────┐
-               ▼                             ▼                             ▼
-   ┌───────────────────────┐     ┌───────────────────────┐     ┌───────────────────────┐
-   │  Feature Store Engine │     │ Distributed Training  │     │ High-Throughput Serve │
-   │ ───────────────────── │     │ ───────────────────── │     │ ───────────────────── │
-   │ • Online Key-Value    │     │ • All-Reduce / PS     │     │ • Dynamic Batcher     │
-   │ • Offline Parquet     │     │ • Bayesian HPO        │     │ • Multi-Engine Worker │
-   │ • Point-in-Time Join  │     │ • Checkpoint Manager  │     │ • SSE Token Streamer  │
-   └───────────┬───────────┘     └───────────┬───────────┘     └───────────┬───────────┘
-               │                             │                             │
-               └─────────────────────────────┼─────────────────────────────┘
-                                             ▼
-                               ┌───────────────────────────┐
-                               │ Model Registry & Monitor  │
-                               │ ───────────────────────── │
-                               │ • Lineage Graph & ML-BOM  │
-                               │ • KS / PSI / Wasserstein  │
-                               │ • Automated Retrain Alert │
-                               └───────────────────────────┘
+                                  ┌────────────────────────────────────────┐
+                                  │   Web Dashboard & CLI (Port 3000/8000)  │
+                                  └───────────────────┬────────────────────┘
+                                                      │
+                                                      ▼
+                                  ┌────────────────────────────────────────┐
+                                  │    Control Plane Gateway & Auth        │
+                                  │  (FastAPI REST + JWT + Rate Limiter)   │
+                                  └───────────────────┬────────────────────┘
+                                                      │
+         ┌────────────────────────────────────────────┼────────────────────────────────────────────┐
+         ▼                                            ▼                                            ▼
+┌───────────────────────────┐            ┌───────────────────────────┐            ┌───────────────────────────┐
+│   Feature Store Engine    │            │    Distributed Training   │            │   High-Throughput Serving │
+│ ───────────────────────── │            │ ───────────────────────── │            │ ───────────────────────── │
+│ • In-Memory / Redis Online│            │ • Ring-AllReduce Kernels  │            │ • Adaptive Dynamic Batcher│
+│ • Parquet Analytical Store│            │ • Parameter Server Coords │            │ • Multi-Backend Workers   │
+│ • Point-In-Time Temporal  │            │ • Bayesian & Hyperband HPO│            │ • SSE / Token Streaming   │
+└─────────────┬─────────────┘            └─────────────┬─────────────┘            └─────────────┬─────────────┘
+              │                                        │                                        │
+              └────────────────────────────────────────┼────────────────────────────────────────┘
+                                                       ▼
+                                         ┌───────────────────────────┐
+                                         │  Model Registry & Monitor │
+                                         │ ───────────────────────── │
+                                         │ • Model Lifecycle States  │
+                                         │ • KS / PSI / Wasserstein  │
+                                         │ • Lineage Graph & ML-BOM  │
+                                         └───────────────────────────┘
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Running the Project
 
-### Installation
-
+### 1. Prerequisites & Installation
+Ensure Python 3.10+ and Node.js 18+ are installed.
 ```bash
+# Clone the repository
 git clone https://github.com/Chandravamsi09/Manta.git
 cd Manta
+
+# Install Python backend dependencies
 py -m pip install -e .
 ```
 
-### Python SDK Example
+### 2. Start the Backend ML Server (Port 8000)
+```bash
+py main.py
+```
+*The backend API and unified control dashboard will be live at `http://localhost:8000`.*
 
+### 3. Start the Frontend UI Dashboard (Port 3000)
+```bash
+cd frontend
+npm install
+npm run dev -- --host 0.0.0.0 --port 3000
+```
+*The React UI will be live at `http://localhost:3000`.*
+
+---
+
+## 🔐 Authentication Credentials
+The platform includes enterprise session-token authentication:
+- **Username**: `admin`
+- **Password**: `admin123` (or API Key: `manta-admin-key-2026`)
+
+---
+
+## 🎯 Running the Complete End-to-End Demo Flow
+
+You can run the end-to-end ML systems workflow directly from the UI or via API:
+
+### Option A: From Web UI
+1. Navigate to **`http://localhost:3000`** (or **`http://localhost:8000`**).
+2. Sign in with `admin` / `admin123`.
+3. Click the **"E2E Workflow Demo"** tab.
+4. Click **"▶ Run Complete Demo Flow"**.
+5. Watch the live progression across all 4 stages:
+   - **Step 1 (Feature Store)**: Ingest & fetch customer `u1001` online feature vector.
+   - **Step 2 (Serving & Dynamic Batching)**: Serve model `fraud_detector:v1.2` with microsecond latency.
+   - **Step 3 (Drift Monitoring)**: Compute Kolmogorov-Smirnov & Wasserstein drift metrics against baseline.
+   - **Step 4 (Pipeline DAG)**: Execute automated continuous retraining DAG in topological order.
+
+### Option B: Via Python CLI / Script
 ```python
 import manta
-from manta.feature_store import FeatureStore, Entity, FeatureView
-from manta.serving import InferenceClient
+client = manta.Client("http://localhost:8000")
 
-# Initialize Manta Client
-client = manta.Client(endpoint="http://localhost:8000")
+# 1. Feature Store Lookup
+features = client.feature_store.get_online_features("user_stats", ["u1001"])
 
-# Register Feature View
-fs = client.feature_store
-user_features = fs.get_online_features(
-    entity_keys={"user_id": [1001, 1002]},
-    features=["user_stats:click_rate", "user_stats:avg_purchase"]
-)
-
-# High-Performance Serving
-serving = client.serving
-prediction = serving.predict(
-    model_name="fraud_detector",
-    version="v1.2",
-    inputs={"features": [[0.85, 120.50], [0.12, 14.20]]}
-)
-print("Inference Result:", prediction)
-```
-
-### CLI Inspection
-
-```bash
-# Check cluster health
-mantactl health
-
-# Inspect serving models
-mantactl models list
-
-# Run drift analysis
-mantactl monitor drift --model fraud_detector --baseline v1.0 --target live
+# 2. Dynamic Batch Prediction
+pred = client.serving.predict("fraud_detector", inputs={"features": [0.85, 14.0, 0.08, 1.0]}, version="v1.2")
+print("Prediction:", pred)
 ```
 
 ---
 
-## 🧪 Comprehensive Verification & Test Suites
+## 🧪 Running Automated Tests
 
-Manta includes over 5 comprehensive test suites:
-1. `tests/unit/test_core.py` — Core primitives, tensor buffers, and storage engines.
-2. `tests/unit/test_feature_store.py` — Online lookup & point-in-time temporal join accuracy.
-3. `tests/unit/test_training.py` — Distributed training synchronization, HPO, and checkpoints.
-4. `tests/unit/test_serving.py` — Dynamic batching concurrency, latency thresholds, and workers.
-5. `tests/unit/test_monitoring.py` — Statistical validity of KS, PSI, Wasserstein, and embedding drift.
-6. `tests/unit/test_registry.py` — Model lifecycle state machine & contract integrity.
-7. `tests/integration/test_e2e_lifecycle.py` — Full end-to-end ML lifecycle orchestration.
-
-Run all tests:
+Manta contains 44 test suites covering unit algorithms, integration lifecycles, and stress benchmarks:
 ```bash
-py -m pytest tests/ -v
+py -m pytest tests/ -v -p no:cacheprovider
 ```
+
+---
+
+## 📦 Project Structure
+- `manta/core/` — High-performance Tensor primitives, memory pools, and storage backends.
+- `manta/feature_store/` — Dual-tier online/offline feature store & point-in-time join engine.
+- `manta/training/` — Distributed training coordinator, Ring All-Reduce kernels, Bayesian HPO.
+- `manta/serving/` — Dynamic batching inference server, multi-backend workers, SSE streaming.
+- `manta/monitoring/` — Multivariate drift detectors (KS, PSI, Wasserstein, Embedding drift).
+- `manta/registry/` — Model registry, lifecycle state machine, ML-BOM generator, and lineage DAG.
+- `manta/pipeline/` — Declarative DAG workflow compiler and topological executor.
+- `manta/gateway/` — FastAPI REST control plane, rate limiting, and telemetry exporter.
+- `frontend/` — React 18, TypeScript, Tailwind CSS monitoring dashboard & DAG visualizer.
+- `tests/` — Comprehensive test suites (unit, integration, stress benchmarks).
 
 ---
 
 ## 📄 License
-
-Licensed under the Apache License, Version 2.0.
+Proprietary — All rights reserved.

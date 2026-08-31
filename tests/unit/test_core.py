@@ -45,7 +45,9 @@ def test_tensor_pool_and_buffer():
     buf.reset()
     assert buf.used_bytes == 0
 
-def test_storage_backends(tmp_path):
+def test_storage_backends():
+    import tempfile
+    import shutil
     # Test In-Memory
     mem_store = InMemoryStorageBackend()
     mem_store.put("models/v1.bin", b"mock_weights")
@@ -56,7 +58,8 @@ def test_storage_backends(tmp_path):
     assert not mem_store.exists("models/v1.bin")
 
     # Test Local Storage
-    local_store = LocalStorageBackend(root_dir=tmp_path / "manta_storage")
-    local_store.put("chk/epoch_1.bin", b"state_dict_payload")
-    assert local_store.exists("chk/epoch_1.bin")
-    assert local_store.get("chk/epoch_1.bin") == b"state_dict_payload"
+    with tempfile.TemporaryDirectory() as temp_dir:
+        local_store = LocalStorageBackend(root_dir=temp_dir)
+        local_store.put("chk/epoch_1.bin", b"state_dict_payload")
+        assert local_store.exists("chk/epoch_1.bin")
+        assert local_store.get("chk/epoch_1.bin") == b"state_dict_payload"
