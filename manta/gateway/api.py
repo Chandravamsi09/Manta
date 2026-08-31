@@ -178,15 +178,7 @@ def create_app() -> FastAPI:
             token = authorization.replace("Bearer ", "").strip()
             if token in active_tokens:
                 return {"status": "SUCCESS", "data": active_tokens[token]}
-        return {
-            "status": "SUCCESS",
-            "data": {
-                "user_id": "usr_admin",
-                "username": "admin",
-                "role": "ADMIN",
-                "token": "manta_default_admin_token"
-            }
-        }
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
 
     # Telemetry & Metrics
     @app.get("/metrics")

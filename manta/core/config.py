@@ -10,7 +10,7 @@ class SystemSettings(BaseModel):
     environment: str = "production"
     debug: bool = False
     log_level: str = "INFO"
-    secret_key: str = "manta-secret-super-key-change-in-prod"
+    secret_key: Optional[str] = Field(default_factory=lambda: os.getenv("MANTA_SECRET_KEY"))
     cluster_name: str = "manta-primary-cluster"
     num_workers: int = 8
     temp_dir: str = "/tmp/manta"
@@ -65,10 +65,10 @@ class MonitoringSettings(BaseModel):
     alert_webhook_url: Optional[str] = None
 
 class AuthSettings(BaseModel):
-    admin_username: str = os.getenv("MANTA_ADMIN_USER", "admin")
-    admin_password: str = os.getenv("MANTA_ADMIN_PASSWORD", "admin123")
-    api_key: str = os.getenv("MANTA_API_KEY", "manta-admin-key-2026")
-    jwt_secret: str = os.getenv("MANTA_JWT_SECRET", "manta-jwt-secret-2026")
+    admin_username: str = Field(default_factory=lambda: os.getenv("MANTA_ADMIN_USER", "admin"))
+    admin_password: Optional[str] = Field(default_factory=lambda: os.getenv("MANTA_ADMIN_PASSWORD"))
+    api_key: Optional[str] = Field(default_factory=lambda: os.getenv("MANTA_API_KEY"))
+    jwt_secret: Optional[str] = Field(default_factory=lambda: os.getenv("MANTA_JWT_SECRET"))
     token_expire_seconds: int = 86400
 
 class MantaConfig(BaseModel):

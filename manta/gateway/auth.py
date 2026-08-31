@@ -27,33 +27,37 @@ class UserPrincipal:
         return required_role in self.roles
 
 class Authenticator:
-    """API Key & JWT Token Authenticator."""
+    """API Key & User Credentials Authenticator."""
     def __init__(self, config: Optional[Any] = None):
         from manta.core.config import get_config
         self._cfg = config or get_config().auth
         self._keys: Dict[str, UserPrincipal] = {}
-        # Seed configured admin key
-        api_key_bytes = self._cfg.api_key.encode("utf-8")
-        admin_hash = hashlib.sha256(api_key_bytes).hexdigest()
-        self._keys[admin_hash] = UserPrincipal(
-            user_id="user_admin",
-            username=self._cfg.admin_username,
-            roles=[Role.ADMIN],
-            api_key_hash=admin_hash
-        )
+        if self._cfg.api_key:
+            api_key_bytes = self._cfg.api_key.encode("utf-8")
+            admin_hash = hashlib.sha256(api_key_bytes).hexdigest()
+            self._keys[admin_hash] = UserPrincipal(
+                user_id="user_admin",
+                username=self._cfg.admin_username,
+                roles=[Role.ADMIN],
+                api_key_hash=admin_hash
+            )
 
     def authenticate_api_key(self, api_key: str) -> UserPrincipal:
+        if not api_key:
+            raise AuthenticationError("API key cannot be empty")
         h = hashlib.sha256(api_key.encode("utf-8")).hexdigest()
         if h not in self._keys:
             raise AuthenticationError("Invalid API key")
         return self._keys[h]
 
-    def validate_credentials(self, username: str, password_or_key: str) -> Optional[UserPrincipal]:
-        if username.strip() == self._cfg.admin_username:
-            if password_or_key in (self._cfg.admin_password, self._cfg.api_key):
-                return UserPrincipal(
-                    user_id="user_admin",
-                    username=self._cfg.admin_username,
-                    roles=[Role.ADMIN]
-                )
+    def validate_credentials(self, username: str, password: str) -> Optional[UserPrincipal]:
+        """Validates login credentials against environment/configuration only."""
+        if not self._cfg.admin_password:
+            return None
+        if username.strip() == self._cfg.admin_username and password == self._cfg.admin_password:
+            return UserPrincipal(
+                user_id="user_admin",
+                username=self._cfg.admin_username,
+                roles=[Role.ADMIN]
+            )
         return None

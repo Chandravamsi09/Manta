@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { apiFetch } from '../services/api.ts';
-import { ShieldCheck, Lock, User, AlertCircle } from 'lucide-react';
+import { Lock, User, AlertCircle, ShieldAlert } from 'lucide-react';
 
 interface LoginModalProps {
   onSuccess: (username: string) => void;
@@ -8,7 +8,7 @@ interface LoginModalProps {
 
 export default function LoginModal({ onSuccess }: LoginModalProps) {
   const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin123');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,7 +25,7 @@ export default function LoginModal({ onSuccess }: LoginModalProps) {
       localStorage.setItem('manta_user', res.data.username);
       onSuccess(res.data.username);
     } catch (err: any) {
-      setError(err.message || 'Login failed. Check credentials.');
+      setError(err.message || 'Authentication failed. Please verify credentials.');
     } finally {
       setIsLoading(false);
     }
@@ -40,7 +40,7 @@ export default function LoginModal({ onSuccess }: LoginModalProps) {
           </div>
           <div>
             <h2 className="text-xl font-bold text-white tracking-tight">Manta ML Systems</h2>
-            <p className="text-xs text-teal-400">Enterprise Control Plane Authentication</p>
+            <p className="text-xs text-teal-400">Control Plane Authentication</p>
           </div>
         </div>
 
@@ -60,6 +60,7 @@ export default function LoginModal({ onSuccess }: LoginModalProps) {
                 type="text"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
+                placeholder="Enter username"
                 className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-teal-500"
                 required
               />
@@ -67,13 +68,14 @@ export default function LoginModal({ onSuccess }: LoginModalProps) {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Password / API Key</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">Password</label>
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
               <input 
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
+                placeholder="Enter password"
                 className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-teal-500"
                 required
               />
@@ -89,8 +91,9 @@ export default function LoginModal({ onSuccess }: LoginModalProps) {
           </button>
         </form>
 
-        <div className="text-xs text-slate-500 text-center border-t border-slate-800 pt-4">
-          Demo Enterprise Credentials: <span className="text-teal-400 font-mono">admin / admin123</span>
+        <div className="text-xs text-slate-500 text-center border-t border-slate-800 pt-4 flex items-center justify-center gap-1.5">
+          <ShieldAlert className="w-3.5 h-3.5 text-slate-400" />
+          <span>Credentials configured via MANTA_ADMIN_USER and MANTA_ADMIN_PASSWORD</span>
         </div>
       </div>
     </div>

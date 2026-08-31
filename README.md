@@ -45,7 +45,7 @@
                                                       ▼
                                   ┌────────────────────────────────────────┐
                                   │    Control Plane Gateway & Auth        │
-                                  │  (FastAPI REST + JWT + Rate Limiter)   │
+                                  │  (FastAPI REST + Session Token + RBAC) │
                                   └───────────────────┬────────────────────┘
                                                       │
          ┌────────────────────────────────────────────┼────────────────────────────────────────────┐
@@ -84,26 +84,27 @@ cd Manta
 py -m pip install -e .
 ```
 
-### 2. Start the Backend ML Server (Port 8000)
+### 2. Configure Environment Variables
+Set your administrative authentication credentials in your environment:
+```bash
+export MANTA_ADMIN_USER=admin
+export MANTA_ADMIN_PASSWORD=your_secure_password
+export MANTA_API_KEY=your_secure_api_key
+```
+
+### 3. Start the Backend ML Server (Port 8000)
 ```bash
 py main.py
 ```
 *The backend API and unified control dashboard will be live at `http://localhost:8000`.*
 
-### 3. Start the Frontend UI Dashboard (Port 3000)
+### 4. Start the Frontend UI Dashboard (Port 3000)
 ```bash
 cd frontend
-npm install
+npm ci
 npm run dev -- --host 0.0.0.0 --port 3000
 ```
 *The React UI will be live at `http://localhost:3000`.*
-
----
-
-## 🔐 Authentication Credentials
-The platform includes enterprise session-token authentication:
-- **Username**: `admin`
-- **Password**: `admin123` (or API Key: `manta-admin-key-2026`)
 
 ---
 
@@ -113,7 +114,7 @@ You can run the end-to-end ML systems workflow directly from the UI or via API:
 
 ### Option A: From Web UI
 1. Navigate to **`http://localhost:3000`** (or **`http://localhost:8000`**).
-2. Sign in with `admin` / `admin123`.
+2. Sign in using your configured credentials (`MANTA_ADMIN_USER` / `MANTA_ADMIN_PASSWORD`).
 3. Click the **"E2E Workflow Demo"** tab.
 4. Click **"▶ Run Complete Demo Flow"**.
 5. Watch the live progression across all 4 stages:
