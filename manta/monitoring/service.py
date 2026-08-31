@@ -41,3 +41,5 @@ class ModelMonitoringService:
             self.retraining_trigger.trigger_retraining(model_name, f"{drifted_count} features drifted")
 
         return reports
+
+# Multivariate Distribution Drift Engine (KS, Wasserstein, PSI, Embedding)
