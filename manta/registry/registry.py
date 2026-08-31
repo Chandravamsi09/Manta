@@ -95,3 +95,5 @@ class ModelRegistry:
 
     def list_models(self) -> List[RegisteredModel]:
         return list(self._models.values())
+
+# Enterprise Model Lifecycle State Machine & ML-BOM Generator
