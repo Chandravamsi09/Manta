@@ -1,0 +1,9 @@
+apiVersion: v2
+name: manta-platform
+description: Helm chart for Manta Enterprise Distributed ML Systems & MLOps Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: Chandra Vamsi
+    email: avvaruchandravamsi30@gmail.com

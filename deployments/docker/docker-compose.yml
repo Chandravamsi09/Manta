@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  manta-gateway:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/Dockerfile
+    ports:
+      - "8000:8000"
+      - "50051:50051"
+    environment:
+      - MANTA_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    networks:
+      - manta-net
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - manta-net
+
+  manta-ui:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ../../frontend:/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    networks:
+      - manta-net
+
+networks:
+  manta-net:
+    driver: bridge
