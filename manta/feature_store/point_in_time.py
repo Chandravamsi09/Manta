@@ -80,3 +80,5 @@ class PointInTimeJoinEngine:
             joined_results.append(enriched_row)
 
         return joined_results
+
+# Temporal Point-in-Time Join Engine with Zero Data Leakage Guarantees
