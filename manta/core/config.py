@@ -64,6 +64,13 @@ class MonitoringSettings(BaseModel):
     embedding_drift_threshold: float = 0.20
     alert_webhook_url: Optional[str] = None
 
+class AuthSettings(BaseModel):
+    admin_username: str = os.getenv("MANTA_ADMIN_USER", "admin")
+    admin_password: str = os.getenv("MANTA_ADMIN_PASSWORD", "admin123")
+    api_key: str = os.getenv("MANTA_API_KEY", "manta-admin-key-2026")
+    jwt_secret: str = os.getenv("MANTA_JWT_SECRET", "manta-jwt-secret-2026")
+    token_expire_seconds: int = 86400
+
 class MantaConfig(BaseModel):
     system: SystemSettings = Field(default_factory=SystemSettings)
     storage: StorageSettings = Field(default_factory=StorageSettings)
@@ -71,6 +78,7 @@ class MantaConfig(BaseModel):
     training: TrainingSettings = Field(default_factory=TrainingSettings)
     serving: ServingSettings = Field(default_factory=ServingSettings)
     monitoring: MonitoringSettings = Field(default_factory=MonitoringSettings)
+    auth: AuthSettings = Field(default_factory=AuthSettings)
 
     @classmethod
     def from_yaml(cls, path: str | Path) -> MantaConfig:

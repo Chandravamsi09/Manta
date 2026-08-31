@@ -151,12 +151,13 @@ def create_app() -> FastAPI:
     # Auth Endpoints
     @app.post("/v1/auth/login")
     def login(payload: LoginPayload):
-        if payload.username.lower() in ("admin", "manta_user") and payload.password in ("admin123", "manta-admin-key-2026", "password"):
+        principal = auth.validate_credentials(payload.username, payload.password)
+        if principal:
             token = f"manta_tok_{uuid.uuid4().hex[:16]}"
             user_info = {
-                "user_id": f"usr_{payload.username}",
-                "username": payload.username,
-                "role": "ADMIN" if payload.username == "admin" else "ML_ENGINEER",
+                "user_id": principal.user_id,
+                "username": principal.username,
+                "role": "ADMIN" if Role.ADMIN in principal.roles else "ML_ENGINEER",
                 "token": token,
                 "expires_in": 86400
             }

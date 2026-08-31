@@ -28,13 +28,16 @@ class UserPrincipal:
 
 class Authenticator:
     """API Key & JWT Token Authenticator."""
-    def __init__(self):
+    def __init__(self, config: Optional[Any] = None):
+        from manta.core.config import get_config
+        self._cfg = config or get_config().auth
         self._keys: Dict[str, UserPrincipal] = {}
-        # Seed default admin key
-        admin_hash = hashlib.sha256(b"manta-admin-key-2026").hexdigest()
+        # Seed configured admin key
+        api_key_bytes = self._cfg.api_key.encode("utf-8")
+        admin_hash = hashlib.sha256(api_key_bytes).hexdigest()
         self._keys[admin_hash] = UserPrincipal(
             user_id="user_admin",
-            username="admin",
+            username=self._cfg.admin_username,
             roles=[Role.ADMIN],
             api_key_hash=admin_hash
         )
@@ -44,3 +47,13 @@ class Authenticator:
         if h not in self._keys:
             raise AuthenticationError("Invalid API key")
         return self._keys[h]
+
+    def validate_credentials(self, username: str, password_or_key: str) -> Optional[UserPrincipal]:
+        if username.strip() == self._cfg.admin_username:
+            if password_or_key in (self._cfg.admin_password, self._cfg.api_key):
+                return UserPrincipal(
+                    user_id="user_admin",
+                    username=self._cfg.admin_username,
+                    roles=[Role.ADMIN]
+                )
+        return None
