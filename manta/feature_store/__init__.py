@@ -29,3 +29,5 @@ __all__ = [
     "StreamIngestor",
     "FeatureStore",
 ]
+
+# Feature store point-in-time subsystem initialized
