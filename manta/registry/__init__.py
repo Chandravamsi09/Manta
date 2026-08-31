@@ -25,3 +25,5 @@ __all__ = [
     "LineageEdge",
     "ModelRegistry",
 ]
+
+# Registry state machine governance initialized
