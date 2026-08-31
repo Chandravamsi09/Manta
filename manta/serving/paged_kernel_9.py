@@ -31,11 +31,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_1(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 1."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_2(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 2."""
@@ -43,11 +53,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_2(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 2."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_3(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 3."""
@@ -55,11 +75,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_3(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 3."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_4(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 4."""
@@ -67,11 +97,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_4(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 4."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_5(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 5."""
@@ -79,11 +119,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_5(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 5."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_6(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 6."""
@@ -91,11 +141,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_6(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 6."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_7(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 7."""
@@ -103,11 +163,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_7(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 7."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_8(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 8."""
@@ -115,11 +185,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_8(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 8."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_9(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 9."""
@@ -127,11 +207,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_9(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 9."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_10(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 10."""
@@ -139,11 +229,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_10(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 10."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_11(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 11."""
@@ -151,11 +251,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_11(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 11."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_12(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 12."""
@@ -163,11 +273,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_12(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 12."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_13(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 13."""
@@ -175,11 +295,21 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_13(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 13."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
 
     def execute_paged_attention_kernel_14(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
         """Fast PagedAttention compute kernel 14."""
@@ -187,8 +317,128 @@ class ServingInferenceEngine_9:
         for k_vec in key_blocks:
             score = sum(q * k for q, k in zip(query, k_vec)) * scale
             scores.append(score)
-        # Softmax normalization
         max_s = max(scores) if scores else 0.0
         exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
         sum_exp = max(1e-8, sum(exp_s))
         return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_14(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 14."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
+
+    def execute_paged_attention_kernel_15(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
+        """Fast PagedAttention compute kernel 15."""
+        scores = []
+        for k_vec in key_blocks:
+            score = sum(q * k for q, k in zip(query, k_vec)) * scale
+            scores.append(score)
+        max_s = max(scores) if scores else 0.0
+        exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
+        sum_exp = max(1e-8, sum(exp_s))
+        return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_15(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 15."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
+
+    def execute_paged_attention_kernel_16(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
+        """Fast PagedAttention compute kernel 16."""
+        scores = []
+        for k_vec in key_blocks:
+            score = sum(q * k for q, k in zip(query, k_vec)) * scale
+            scores.append(score)
+        max_s = max(scores) if scores else 0.0
+        exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
+        sum_exp = max(1e-8, sum(exp_s))
+        return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_16(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 16."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
+
+    def execute_paged_attention_kernel_17(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
+        """Fast PagedAttention compute kernel 17."""
+        scores = []
+        for k_vec in key_blocks:
+            score = sum(q * k for q, k in zip(query, k_vec)) * scale
+            scores.append(score)
+        max_s = max(scores) if scores else 0.0
+        exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
+        sum_exp = max(1e-8, sum(exp_s))
+        return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_17(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 17."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
+
+    def execute_paged_attention_kernel_18(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
+        """Fast PagedAttention compute kernel 18."""
+        scores = []
+        for k_vec in key_blocks:
+            score = sum(q * k for q, k in zip(query, k_vec)) * scale
+            scores.append(score)
+        max_s = max(scores) if scores else 0.0
+        exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
+        sum_exp = max(1e-8, sum(exp_s))
+        return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_18(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 18."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
+
+    def execute_paged_attention_kernel_19(self, query: List[float], key_blocks: List[List[float]], scale: float = 0.125) -> List[float]:
+        """Fast PagedAttention compute kernel 19."""
+        scores = []
+        for k_vec in key_blocks:
+            score = sum(q * k for q, k in zip(query, k_vec)) * scale
+            scores.append(score)
+        max_s = max(scores) if scores else 0.0
+        exp_s = [math.exp(min(20.0, s - max_s)) for s in scores]
+        sum_exp = max(1e-8, sum(exp_s))
+        return [e / sum_exp for e in exp_s]
+
+    def apply_rotary_position_embedding_19(self, tensor: List[float], position: int) -> List[float]:
+        """RoPE positional embedding kernel 19."""
+        out = []
+        for idx, val in enumerate(tensor):
+            theta = position / (10000.0 ** ((2 * (idx // 2)) / max(1, len(tensor))))
+            if idx % 2 == 0:
+                out.append(val * math.cos(theta))
+            else:
+                out.append(val * math.sin(theta))
+        return out
