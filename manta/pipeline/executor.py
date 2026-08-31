@@ -58,3 +58,5 @@ class PipelineExecutor:
         plan.end_time = datetime.datetime.utcnow()
         logger.info(f"DAG Run [{run_id}] completed successfully in {plan.duration_sec:.3f}s")
         return plan
+
+# Declarative DAG Pipeline Compiler and Topological Distributed Executor
