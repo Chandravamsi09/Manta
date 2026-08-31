@@ -137,15 +137,14 @@ class Tensor:
         raise TypeError("Unsupported operand type")
 
     def to_bytes(self) -> bytes:
-        header = f"MANTA_TENSOR|{self.dtype.value}|{','.join(map(str, self.shape.dims))}
-".encode("utf-8")
+        dims_str = ",".join(map(str, self.shape.dims))
+        header = f"MANTA_TENSOR|{self.dtype.value}|{dims_str}\n".encode("utf-8")
         raw = struct.pack(f"{len(self._data)}f", *self._data)
         return header + raw
 
     @classmethod
     def from_bytes(cls, b: bytes) -> Tensor:
-        newline_idx = b.find(b"
-")
+        newline_idx = b.find(b"\n")
         header = b[:newline_idx].decode("utf-8")
         parts = header.split("|")
         dtype = DataType(parts[1])

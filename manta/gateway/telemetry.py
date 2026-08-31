@@ -34,9 +34,7 @@ class MetricsExporter:
                 lines.append(f"# TYPE {k}_latency_ms summary")
                 lines.append(f"{k}_count {len(vals)}")
                 lines.append(f"{k}_sum {sum(vals)}")
-                lines.append(f"{k}_avg {sum(vals)/len(vals):.3f}")
-        return "
-".join(lines)
+        return "\n".join(lines)
 
 
 class TracerProvider:

@@ -85,8 +85,7 @@ class ParquetOfflineStore(OfflineStore):
                     rec["_timestamp"] = datetime.datetime.utcnow().timestamp()
                 elif isinstance(rec["_timestamp"], datetime.datetime):
                     rec["_timestamp"] = rec["_timestamp"].timestamp()
-                f.write(json.dumps(rec) + "
-")
+                f.write(json.dumps(rec) + "\n")
 
     def read_records(
         self,

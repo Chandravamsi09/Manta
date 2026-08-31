@@ -15,10 +15,8 @@ class SSEFormatter:
     """Server-Sent Events (SSE) formatter for token streaming."""
     @staticmethod
     def format_event(data: Dict[str, Any], event: str = "message") -> str:
-        return f"event: {event}
-data: {json.dumps(data)}
-
-"
+        dumped = json.dumps(data)
+        return f"event: {event}\ndata: {dumped}\n\n"
 
 
 class TokenStreamer:
